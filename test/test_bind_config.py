@@ -24,5 +24,10 @@ class TestBindConfig(unittest.TestCase):
         result = 'stuff;\n'
         self.renderTest(testdata, result)
 
+    def test_number(self):
+        testdata = 3
+        result = '3;\n'
+        self.renderTest(testdata, result)
+
 if __name__ == '__main__':
     unittest.main()
