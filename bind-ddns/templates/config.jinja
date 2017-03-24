@@ -1,11 +1,15 @@
 {%- set key = 0 -%}
 {%- set value = 1 -%}
 {%- macro bind_config(data) -%}
-  {%- if data is mapping -%}
+  {%- if data is string or data is number -%}
+    {{ data }}{{ ';\n'}}
+  {%- elif data is mapping -%}
     {%- for item in data|dictsort -%}
       {{ item[key] }} {{ bind_config(item[value]) }}
     {%- endfor -%}
   {%- else -%}
-    {{ data }}{{ ';\n'}} 
+    {%- for item in data -%}
+      {{ bind_config(item) }}
+    {%- endfor -%}
   {%- endif -%}
 {%- endmacro -%}
