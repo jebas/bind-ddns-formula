@@ -29,5 +29,10 @@ class TestBindConfig(unittest.TestCase):
         result = '3;\n'
         self.renderTest(testdata, result)
 
+    def test_key_value(self):
+        testdata = {'key': 'value'}
+        result = 'key value;\n'
+        self.renderTest(testdata, result)
+
 if __name__ == '__main__':
     unittest.main()

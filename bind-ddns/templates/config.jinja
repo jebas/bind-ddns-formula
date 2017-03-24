@@ -1,3 +1,9 @@
 {%- macro bind_config(data) -%}
-  {{ data }}{{ ';\n'}} 
+  {%- if data is mapping -%}
+    {%- for key, value in data.iteritems() -%}
+      {{ key }} {{ bind_config(value) }}
+    {%- endfor -%}
+  {%- else -%}
+    {{ data }}{{ ';\n'}} 
+  {%- endif -%}
 {%- endmacro -%}
