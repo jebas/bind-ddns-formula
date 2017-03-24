@@ -34,5 +34,10 @@ class TestBindConfig(unittest.TestCase):
         result = 'key value;\n'
         self.renderTest(testdata, result)
 
+    def test_ordred_keys(self):
+        testdata = {'keyd': 'valued', 'keya': 'valuea', 'keyc': 'valuec', 'keyb': 'valueb'}
+        result = 'keya valuea;\nkeyb valueb;\nkeyc valuec;\nkeyd valued;\n'
+        self.renderTest(testdata, result)
+
 if __name__ == '__main__':
     unittest.main()

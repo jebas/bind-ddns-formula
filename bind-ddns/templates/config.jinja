@@ -1,7 +1,9 @@
+{%- set key = 0 -%}
+{%- set value = 1 -%}
 {%- macro bind_config(data) -%}
   {%- if data is mapping -%}
-    {%- for key, value in data.iteritems() -%}
-      {{ key }} {{ bind_config(value) }}
+    {%- for item in data|dictsort -%}
+      {{ item[key] }} {{ bind_config(item[value]) }}
     {%- endfor -%}
   {%- else -%}
     {{ data }}{{ ';\n'}} 
