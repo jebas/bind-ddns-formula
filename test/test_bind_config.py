@@ -34,6 +34,11 @@ class TestBindConfig(unittest.TestCase):
         result = 'key value;\n'
         self.renderTest(testdata, result)
 
+    def test_key_number(self):
+        testdata = {'key': 3}
+        result = 'key 3;\n'
+        self.renderTest(testdata, result)
+
     def test_ordred_keys(self):
         testdata = {'keyd': 'valued', 'keya': 'valuea', 'keyc': 'valuec', 'keyb': 'valueb'}
         result = 'keya valuea;\nkeyb valueb;\nkeyc valuec;\nkeyd valued;\n'
@@ -42,6 +47,11 @@ class TestBindConfig(unittest.TestCase):
     def test_unordered_keys(self):
         testdata = [{'keyd': 'valued'}, {'keyc': 'valuec'}, {'keyb': 'valueb'}, {'keya': 'valuea'}]
         result = 'keyd valued;\nkeyc valuec;\nkeyb valueb;\nkeya valuea;\n'
+        self.renderTest(testdata, result)
+
+    def test_nested_keys(self):
+        testdata = {'outerKey': {'innerKey': 'innerValue'}}
+        result = 'outerKey {\n  innerKey innerValue;\n};\n'
         self.renderTest(testdata, result)
 
 if __name__ == '__main__':
