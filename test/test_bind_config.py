@@ -54,5 +54,15 @@ class TestBindConfig(unittest.TestCase):
         result = 'outerKey {\n  innerKey innerValue;\n};\n'
         self.renderTest(testdata, result)
 
+    def test_multi_nested_keys(self):
+        testdata = {'outerKey': {'middleKey': {'innerKey': 'innerValue'}}}
+        result = 'outerKey {\n  middleKey {\n    innerKey innerValue;\n  };\n};\n'
+        self.renderTest(testdata, result)
+
+    def test_key_nested_list(self):
+        testdata = {'key': ['item1', 'item2', 'item3']}
+        result = 'key {\n  item1;\n  item2;\n  item3;\n};\n'
+        self.renderTest(testdata, result)
+
 if __name__ == '__main__':
     unittest.main()

@@ -2,19 +2,19 @@
 {%- set value = 1 -%}
 {%- macro bind_config(data, indent=0) -%}
   {%- if data is string or data is number -%}
-    {{ data }}{{ ';\n'}}
+    {{ data|string|indent(indent, True) }}{{ ';\n'}}
   {%- elif data is mapping -%}
     {%- for item in data|dictsort -%}
       {{ item[key]|indent(indent, True) }}{{ ' ' }}
-      {%- if item[value] is mapping -%}
-        {{ '{\n' }}{{ bind_config(item[value], indent=indent+2) }}{{ '};\n' }}
+      {%- if item[value] is not string and item[value] is not number -%}
+        {{ '{\n' }}{{ bind_config(item[value], indent=indent+2) }}{{ '};'|indent(indent, True) }}{{ '\n' }}
       {%- else -%}
         {{ bind_config(item[value]) }}
       {%- endif -%}
     {%- endfor -%}
   {%- else -%}
     {%- for item in data -%}
-      {{ bind_config(item) }}
+      {{ bind_config(item, indent) }}
     {%- endfor -%}
   {%- endif -%}
 {%- endmacro -%}
