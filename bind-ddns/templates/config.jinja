@@ -11,10 +11,11 @@
       {%- if item[value] is string or item[value] is number -%}
         {{ bind_config(item[value]) }}
       {%- else -%}
+        {{ '{\n' }}
         {%- if item[key] in multiloop -%}
-          {{ '{\n' }}{{ bind_config(item[value]['list'], indent=indent+2) }}{{ '} '|indent(indent, True) }}{{ bind_config(item[value]['followup'], indent=indent) }}
+          {{ bind_config(item[value]['list'], indent=indent+2) }}{{ '} '|indent(indent, True) }}{{ bind_config(item[value]['followup'], indent=indent) }}
         {%- else -%}
-          {{ '{\n' }}{{ bind_config(item[value], indent=indent+2) }}{{ '};'|indent(indent, True) }}{{ '\n' }}
+          {{ bind_config(item[value], indent=indent+2) }}{{ '};'|indent(indent, True) }}{{ '\n' }}
         {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
