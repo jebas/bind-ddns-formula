@@ -64,5 +64,10 @@ class TestBindConfig(unittest.TestCase):
         result = 'key {\n  item1;\n  item2;\n  item3;\n};\n'
         self.renderTest(testdata, result)
 
+    def test_multi_list(self):
+        testdata = {'deny-answer-addresses': {'list': ['item1', 'item2'], 'followup': {'except-from': ['exp1', 'exp2']}}}
+        result = 'deny-answer-addresses {\n  item1;\n  item2;\n} except-from {\n  exp1;\n  exp2;\n};\n'
+        self.renderTest(testdata, result)
+
 if __name__ == '__main__':
     unittest.main()

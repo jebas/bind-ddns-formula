@@ -1,5 +1,7 @@
 {%- set key = 0 -%}
 {%- set value = 1 -%}
+{%- set multiloop = ['deny-answer-addresses'] -%}
+
 {%- macro bind_config(data, indent=0) -%}
   {%- if data is string or data is number -%}
     {{ data|string|indent(indent, True) }}{{ ';\n'}}
@@ -9,7 +11,11 @@
       {%- if item[value] is string or item[value] is number -%}
         {{ bind_config(item[value]) }}
       {%- else -%}
-        {{ '{\n' }}{{ bind_config(item[value], indent=indent+2) }}{{ '};'|indent(indent, True) }}{{ '\n' }}
+        {%- if item[key] in multiloop -%}
+          {{ '{\n' }}{{ bind_config(item[value]['list'], indent=indent+2) }}{{ '} '|indent(indent, True) }}{{ bind_config(item[value]['followup'], indent=indent) }}
+        {%- else -%}
+          {{ '{\n' }}{{ bind_config(item[value], indent=indent+2) }}{{ '};'|indent(indent, True) }}{{ '\n' }}
+        {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
   {%- else -%}
