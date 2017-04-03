@@ -1,6 +1,6 @@
 {%- set key = 0 -%}
 {%- set value = 1 -%}
-{%- set multiloop = ['deny-answer-addresses'] -%}
+{%- set multiloop = ['deny-answer-addresses', 'deny-answer-aliases'] -%}
 
 {%- macro bind_config(data, indent=0) -%}
   {%- if data is string or data is number -%}
