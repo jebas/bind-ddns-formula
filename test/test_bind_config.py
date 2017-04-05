@@ -74,5 +74,9 @@ class TestBindConfig(unittest.TestCase):
         result = 'deny-answer-aliases {\n  item1;\n  item2;\n} except-from {\n  exp1;\n  exp2;\n};\n'
         self.renderTest(testdata, result)
 
+    def test_multi_list_without_followup(self):
+        testdata = {'deny-answer-aliases': {'list': ['item1', 'item2']}}
+        result = 'deny-answer-aliases {\n  item1;\n  item2;\n};\n'
+
 if __name__ == '__main__':
     unittest.main()
