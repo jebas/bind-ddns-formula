@@ -1,0 +1,22 @@
+---
+#
+# Example pillar configuration
+#
+# Boolean and yes/no entries must be placed into the pillar as strings,
+# otherwise it will show in the config file as 1 or 0.  
+#
+# Any string that needs to be in quotes in the config must be escaped 
+# in the pillar, otherwise the quotes will not appear in the config file.
+#
+# Items that long strings can be broken between entry.  Example:
+# zone from reponse-policy includes zone-name, policy, and other settings.
+# The following is an example:
+#
+# options:
+#   reposnse_policy:
+#     zone zone1: policy given max-policy-ttl 3
+#     zone zone2: policy passthru max-policy-ttl 1
+#
+# By default, the template will place the keys in alphabetically order.
+# If you need to override this, place the keys into a list.  Lists are 
+# not sorted.  
