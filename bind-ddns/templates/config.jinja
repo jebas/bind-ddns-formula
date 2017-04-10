@@ -13,7 +13,12 @@
       {%- else -%}
         {{ '{\n' }}
         {%- if item[key] in multiloop -%}
-          {{ bind_config(item[value]['list'], indent=indent+2) }}{{ '} '|indent(indent, True) }}{{ bind_config(item[value]['followup'], indent=indent) }}
+          {{ bind_config(item[value]['list'], indent=indent+2) }}{{ '}'|indent(indent, True) }}
+          {%- if item[value]['followup'] is defined -%}
+            {{ ' ' }}{{ bind_config(item[value]['followup'], indent=indent) }}
+          {%- else -%}
+            {{ ';\n' }}
+          {%- endif -%}
         {%- else -%}
           {{ bind_config(item[value], indent=indent+2) }}{{ '};'|indent(indent, True) }}{{ '\n' }}
         {%- endif -%}
