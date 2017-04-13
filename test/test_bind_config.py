@@ -84,5 +84,10 @@ class TestBindConfig(unittest.TestCase):
         result = 'deny-answer-aliases  except-from {\n  exp1;\n  exp2;\n};\n'
         self.renderTest(testdata, result)
 
+    def test_include(self):
+        testdata = {'include': ['"my_file"']}
+        result = 'include   "my_file";\n'
+        self.renderTest(testdata, result)
+
 if __name__ == '__main__':
     unittest.main()

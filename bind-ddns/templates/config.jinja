@@ -11,7 +11,7 @@
       {%- if item[value] is string or item[value] is number -%}
         {{ bind_config(item[value]) }}
       {%- else -%}
-        {%- if item[key] not in multiloop or item[value]['list'] is defined -%}
+        {%- if (item[key] not in multiloop and item[key] != 'include') or item[value]['list'] is defined -%}
           {{ '{\n' }}
         {%- endif -%}
         {%- if item[key] in multiloop -%}
@@ -24,7 +24,10 @@
             {{ ';\n' }}
           {%- endif -%}
         {%- else -%}
-          {{ bind_config(item[value], indent=indent+2) }}{{ '};'|indent(indent, True) }}{{ '\n' }}
+          {{ bind_config(item[value], indent=indent+2) }}
+          {%- if item[key] != 'include' -%}
+            {{ '};'|indent(indent, True) }}{{ '\n' }}
+          {%- endif -%}
         {%- endif -%}
       {%- endif -%}
     {%- endfor -%}
