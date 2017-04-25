@@ -86,7 +86,22 @@ class TestBindConfig(unittest.TestCase):
 
     def test_include(self):
         testdata = {'include': ['"my_file"']}
-        result = 'include   "my_file";\n'
+        result = 'include "my_file";\n'
+        self.renderTest(testdata, result)
+
+    def test_multiple_includes(self):
+        testdata = {'include': ['"my_file"', '"other_file"']}
+        result = 'include "my_file";\ninclude "other_file";\n'
+        self.renderTest(testdata, result)
+
+    def test_zone_entry(self):
+        testdata = {'zone': ['zone1', 'zone2']}
+        result = 'zone zone1;\nzone zone2;\n'
+        self.renderTest(testdata, result)
+
+    def test_zone_config_entries(self):
+        testdata = {'zone': {'zone1': {'config': ['item1', 'item2']}}}
+        result = 'zone zone1 {\n  item1;\n  item2;\n};\n'
         self.renderTest(testdata, result)
 
 if __name__ == '__main__':

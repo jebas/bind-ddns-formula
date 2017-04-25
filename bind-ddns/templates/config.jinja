@@ -1,31 +1,37 @@
 {%- set key = 0 -%}
 {%- set value = 1 -%}
 {%- set multiloop = ['deny-answer-addresses', 'deny-answer-aliases'] -%}
+{%- set carries = ['include', 'zone'] -%}
 
-{%- macro bind_config(data, indent=0) -%}
+{%- macro bind_config(data, indent=0, carry='') -%}
   {%- if data is string or data is number -%}
-    {{ data|string|indent(indent, True) }}{{ ';\n'}}
+    {{ add_carry(carry) }}{{ data|string|indent(indent, True) }}{{ ';\n'}}
   {%- elif data is mapping -%}
     {%- for item in data|dictsort -%}
-      {{ item[key]|indent(indent, True) }}{{ ' ' }}
-      {%- if item[value] is string or item[value] is number -%}
-        {{ bind_config(item[value]) }}
+      {%- if item[key] in carries -%}
+        {{ bind_config(item[value], carry=item[key]) }}
       {%- else -%}
-        {%- if (item[key] not in multiloop and item[key] != 'include') or item[value]['list'] is defined -%}
-          {{ '{\n' }}
-        {%- endif -%}
-        {%- if item[key] in multiloop -%}
-          {%- if item[value]['list'] is defined -%}
-            {{ bind_config(item[value]['list'], indent=indent+2) }}{{ '}'|indent(indent, True) }}
-          {%- endif -%}
-          {%- if item[value]['followup'] is defined -%}
-            {{ ' ' }}{{ bind_config(item[value]['followup'], indent=indent) }}
-          {%- else -%}
-            {{ ';\n' }}
-          {%- endif -%}
+        {{ add_carry(carry) }}{{ item[key]|indent(indent, True) }}{{ ' ' }}
+        {%- if item[value] is string or item[value] is number -%}
+          {{ bind_config(item[value]) }}
         {%- else -%}
-          {{ bind_config(item[value], indent=indent+2) }}
-          {%- if item[key] != 'include' -%}
+          {%- if item[key] in multiloop -%}
+            {%- if item[value]['list'] is defined -%}
+              {{ '{\n' }}{{ bind_config(item[value]['list'], indent=indent+2) }}{{ '}'|indent(indent, True) }}
+            {%- endif -%}
+            {%- if item[value]['followup'] is defined -%}
+              {{ ' ' }}{{ bind_config(item[value]['followup'], indent=indent) }}
+            {%- else -%}
+              {{ ';\n' }}
+            {%- endif -%}
+          {%- elif item[key] in carries -%}
+            {{ bind_config(item[value]) }}
+          {%- else -%}
+            {%- if carry == 'zone' -%}
+              {{ '{\n' }}{{ bind_config(item[value]['config'], indent=indent+2) }}
+            {%- else -%}
+              {{ '{\n' }}{{ bind_config(item[value], indent=indent+2) }}
+            {%- endif -%}
             {{ '};'|indent(indent, True) }}{{ '\n' }}
           {%- endif -%}
         {%- endif -%}
@@ -33,7 +39,13 @@
     {%- endfor -%}
   {%- else -%}
     {%- for item in data -%}
-      {{ bind_config(item, indent) }}
+      {{ bind_config(item, indent, carry) }}
     {%- endfor -%}
+  {%- endif -%}
+{%- endmacro -%}
+
+{%- macro add_carry(carry) -%}
+  {%- if carry -%}
+    {{ carry }}{{ ' ' }}
   {%- endif -%}
 {%- endmacro -%}
