@@ -27,10 +27,11 @@
           {%- elif item[key] in carries -%}
             {{ bind_config(item[value]) }}
           {%- else -%}
+            {{ '{\n' }}
             {%- if carry == 'zone' -%}
-              {{ '{\n' }}{{ bind_config(item[value]['config'], indent=indent+2) }}
+              {{ bind_config(item[value]['config'], indent=indent+2) }}
             {%- else -%}
-              {{ '{\n' }}{{ bind_config(item[value], indent=indent+2) }}
+              {{ bind_config(item[value], indent=indent+2) }}
             {%- endif -%}
             {{ '};'|indent(indent, True) }}{{ '\n' }}
           {%- endif -%}

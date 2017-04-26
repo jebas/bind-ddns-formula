@@ -104,5 +104,10 @@ class TestBindConfig(unittest.TestCase):
         result = 'zone zone1 {\n  item1;\n  item2;\n};\n'
         self.renderTest(testdata, result)
 
+    def test_zone_config_only_entries(self):
+        testdata = {'zone': {'zone1': {'config': ['item1', 'item2'], 'file': ['item3', 'item4']}}}
+        result = 'zone zone1 {\n  item1;\n  item2;\n};\n'
+        self.renderTest(testdata, result)
+
 if __name__ == '__main__':
     unittest.main()
