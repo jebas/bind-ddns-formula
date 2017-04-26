@@ -24,8 +24,6 @@
             {%- else -%}
               {{ ';\n' }}
             {%- endif -%}
-          {%- elif item[key] in carries -%}
-            {{ bind_config(item[value]) }}
           {%- else -%}
             {{ '{\n' }}
             {%- if carry == 'zone' -%}
